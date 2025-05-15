@@ -1,0 +1,14 @@
+{
+  "name": "recommender-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "kafkajs": "^2.0.0",
+    "mongoose": "^7.0.0",
+    "winston": "^3.0.0"
+  }
+}

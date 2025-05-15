@@ -1,0 +1,123 @@
+version: "3.8"
+
+services:
+  # Infrastructure de base
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # Services de l'application
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+    depends_on:
+      - auth-service
+      - course-service
+      - chatbot-service
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    environment:
+      - NODE_ENV=development
+      - GRPC_PORT=50051
+
+  chatbot-service:
+    build:
+      context: ./services/chatbot-service
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    environment:
+      - NODE_ENV=development
+      - PORT=4001
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+  course-service:
+    build:
+      context: ./services/course-service
+      dockerfile: Dockerfile
+    ports:
+      - "4002:4002"
+    environment:
+      - NODE_ENV=development
+      - PORT=4002
+
+  quiz-service:
+    build:
+      context: ./services/quiz-service
+      dockerfile: Dockerfile
+    ports:
+      - "50052:50052"
+    environment:
+      - NODE_ENV=development
+      - GRPC_PORT=50052
+    depends_on:
+      - kafka
+
+  recommender-service:
+    build:
+      context: ./services/recommender-service
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - kafka
+
+  notification-service:
+    build:
+      context: ./services/notification-service
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+    depends_on:
+      - kafka
+
+  tracker-service:
+    build:
+      context: ./services/tracker-service
+      dockerfile: Dockerfile
+    ports:
+      - "4003:4003"
+    environment:
+      - NODE_ENV=development
+      - PORT=4003
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

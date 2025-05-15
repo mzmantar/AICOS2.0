@@ -1,0 +1,22 @@
+{
+  "name": "notification-service",
+  "version": "1.0.0",
+  "description": "Service de notification pour AICOS 2.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "TonNom",
+  "license": "MIT",
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "dotenv": "^16.3.1",
+    "kafkajs": "^2.2.4",
+    "mongoose": "^7.5.0",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

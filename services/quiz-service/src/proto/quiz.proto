@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package quiz;
+
+service QuizService {
+  rpc CreateQuiz (CreateQuizRequest) returns (QuizResponse);
+  rpc GetQuiz (GetQuizRequest) returns (QuizResponse);
+  rpc SubmitQuiz (SubmitQuizRequest) returns (QuizResult);
+  rpc GetQuizResults (GetQuizResultsRequest) returns (QuizResultsResponse);
+}
+
+message CreateQuizRequest {
+  string courseId = 1;
+  string title = 2;
+  string description = 3;
+  repeated Question questions = 4;
+  int32 timeLimit = 5;
+  float passingScore = 6;
+}
+
+message GetQuizRequest {
+  string quizId = 1;
+}
+
+message SubmitQuizRequest {
+  string quizId = 1;
+  string studentId = 2;
+  repeated Answer answers = 3;
+}
+
+message GetQuizResultsRequest {
+  string quizId = 1;
+  string studentId = 2;
+}
+
+message Question {
+  string id = 1;
+  string text = 2;
+  QuestionType type = 3;
+  repeated string options = 4;
+  repeated string correctAnswers = 5;
+  float points = 6;
+}
+
+message Answer {
+  string questionId = 1;
+  repeated string selectedAnswers = 2;
+}
+
+message QuizResponse {
+  string id = 1;
+  string courseId = 2;
+  string title = 3;
+  string description = 4;
+  repeated Question questions = 5;
+  int32 timeLimit = 6;
+  float passingScore = 7;
+  string createdAt = 8;
+  string updatedAt = 9;
+}
+
+message QuizResult {
+  string quizId = 1;
+  string studentId = 2;
+  float score = 3;
+  bool passed = 4;
+  repeated QuestionResult questionResults = 5;
+  string submittedAt = 6;
+}
+
+message QuestionResult {
+  string questionId = 1;
+  bool correct = 2;
+  float pointsEarned = 3;
+  repeated string correctAnswers = 4;
+  repeated string studentAnswers = 5;
+}
+
+message QuizResultsResponse {
+  repeated QuizResult results = 1;
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE = 0;
+  MULTIPLE_ANSWER = 1;
+  TRUE_FALSE = 2;
+  SHORT_ANSWER = 3;
+} 

@@ -1,0 +1,37 @@
+{
+  "name": "aicos",
+  "version": "1.0.0",
+  "description": "Plateforme éducative intelligente basée sur une architecture microservices",
+  "scripts": {
+    "start:all": "concurrently \"npm run start:api-gateway\" \"npm run start:auth-service\" \"npm run start:chatbot-service\" \"npm run start:course-service\" \"npm run start:quiz-service\" \"npm run start:recommender-service\" \"npm run start:notification-service\" \"npm run start:tracker-service\"",
+    "start:api-gateway": "cd services/api-gateway && npm start",
+    "start:auth-service": "cd services/auth-service && npm start",
+    "start:chatbot-service": "cd services/chatbot-service && npm start",
+    "start:course-service": "cd services/course-service && npm start",
+    "start:quiz-service": "cd services/quiz-service && npm start",
+    "start:recommender-service": "cd services/recommender-service && npm start",
+    "start:notification-service": "cd services/notification-service && npm start",
+    "start:tracker-service": "cd services/tracker-service && npm start",
+    "install:all": "concurrently \"npm run install:api-gateway\" \"npm run install:auth-service\" \"npm run install:chatbot-service\" \"npm run install:course-service\" \"npm run install:quiz-service\" \"npm run install:recommender-service\" \"npm run install:notification-service\" \"npm run install:tracker-service\"",
+    "install:api-gateway": "cd services/api-gateway && npm install",
+    "install:auth-service": "cd services/auth-service && npm install",
+    "install:chatbot-service": "cd services/chatbot-service && npm install",
+    "install:course-service": "cd services/course-service && npm install",
+    "install:quiz-service": "cd services/quiz-service && npm install",
+    "install:recommender-service": "cd services/recommender-service && npm install",
+    "install:notification-service": "cd services/notification-service && npm install",
+    "install:tracker-service": "cd services/tracker-service && npm install",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "",
+  "license": "MIT"
+} 
