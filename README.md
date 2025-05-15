@@ -116,7 +116,7 @@ L'application est composée des microservices suivants :
 1. Cloner le repository :
 
 ```bash
-git clone
+git clone https://github.com/mzmantar/AICOS2.0.git
 cd AICOS 2.0
 ```
 
